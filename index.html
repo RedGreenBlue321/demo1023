@@ -49,7 +49,8 @@
         function getPrice() {
             const firstSelect = document.getElementById('firstSelect').value;
             const secondSelect = document.getElementById('secondSelect').value;
-            const numberInput = parseFloat(document.getElementById('numberInput').value);
+            const numberInputLength = parseFloat(document.getElementById('numberInputLength').value);
+            const numberInputWidth = parseFloat(document.getElementById('numberInputWidth').value);
 
             let price = 0;
             
@@ -62,7 +63,7 @@
                 else if (secondSelect === 'RS-B') price = 50;
             }
 
-            const totalPrice = price * numberInput;
+            const totalPrice = price * numberInputLength * numberInputWidth;
             document.getElementById('priceOutput').textContent = "Total Price: $" + totalPrice.toFixed(2);
         }
     </script>
@@ -80,8 +81,12 @@
         <select id="secondSelect"></select>
         <br>
 
-        <label for="numberInput">Enter a Number:</label>
-        <input type="number" id="numberInput">
+        <label for="numberInputLength">Enter Length:</label>
+        <input type="number" id="numberInputLength">
+        <br>
+
+        <label for="numberInputWidth">Enter Width:</label>
+        <input type="number" id="numberInputWidth">
         <br>
 
         <button onclick="getPrice()">Get the Price</button>
