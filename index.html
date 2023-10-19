@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Select Menus</title>
+    <title>Dynamic Select Menus with Price</title>
     <script>
         function updateSecondMenu() {
             const firstSelect = document.getElementById('firstSelect');
@@ -32,28 +31,27 @@
             }
         }
 
-        function calculatePrice() {
+        function getPrice() {
             const firstSelect = document.getElementById('firstSelect').value;
             const secondSelect = document.getElementById('secondSelect').value;
-            const numberInput = document.getElementById('numberInput').value;
+            const numberInput = parseFloat(document.getElementById('numberInput').value);
 
-            let price;
-
-            // Example pricing logic
+            let price = 0;
+            
             if (firstSelect === 'ZS') {
-                price = 50; // Base price for ZS
+                if (secondSelect === 'ZS-A') price = 10;
+                else if (secondSelect === 'ZS-B') price = 20;
+                else if (secondSelect === 'ZS-C') price = 30;
             } else if (firstSelect === 'RS') {
-                price = 60; // Base price for RS
+                if (secondSelect === 'RS-A') price = 40;
+                else if (secondSelect === 'RS-B') price = 50;
             }
 
-            price += numberInput * 5; // Adding number input to the price
-
-            // Outputting the price
-            document.getElementById('price').textContent = `The price is $${price}`;
+            const totalPrice = price * numberInput;
+            document.getElementById('priceOutput').textContent = "Total Price: $" + totalPrice.toFixed(2);
         }
     </script>
 </head>
-
 <body>
     <label for="firstSelect">First Selection:</label>
     <select id="firstSelect" onchange="updateSecondMenu()">
@@ -62,21 +60,18 @@
     </select>
 
     <label for="secondSelect">Second Selection:</label>
-    <select id="secondSelect">
-        <!-- Options will be populated here based on the first selection -->
-    </select>
+    <select id="secondSelect"></select>
 
     <label for="numberInput">Enter a Number:</label>
     <input type="number" id="numberInput">
 
-    <button onclick="calculatePrice()">Get the Price</button>
+    <button onclick="getPrice()">Get the Price</button>
 
-    <p id="price"></p>
+    <div id="priceOutput"></div>
 
     <script>
         // Initial population of the second menu
         updateSecondMenu();
     </script>
 </body>
-
 </html>
