@@ -20,6 +20,36 @@
         }
     </style>
     <script>
+        async function updateSecondMenu() {
+            const firstSelect = document.getElementById('firstSelect');
+            const secondSelect = document.getElementById('secondSelect');
+            const selectedValue = firstSelect.value;
+
+            try {
+                // Replace YOUR_API_ENDPOINT with the actual endpoint URL
+                const response = await fetch(`https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x/secondOptions?choice=${selectedValue}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                populateSecondSelect(secondSelect, data.options);
+            } catch (error) {
+                console.error('Error fetching data: ', error);
+            }
+        }
+
+        function populateSecondSelect(selectElement, options) {
+            while (selectElement.firstChild) {
+                selectElement.removeChild(selectElement.firstChild);
+            }
+
+            options.forEach(option => {
+                const optElement = document.createElement('option');
+                optElement.value = option;
+                optElement.textContent = option;
+                selectElement.appendChild(optElement);
+            });
+        }        
         function updateSecondMenu() {
             const firstSelect = document.getElementById('firstSelect');
             const secondSelect = document.getElementById('secondSelect');
