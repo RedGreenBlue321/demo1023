@@ -17,6 +17,11 @@
     <select id="menu8"></select>
     <select id="menu9"></select>
 
+    <button id="lambdaButton">Get Value</button>
+
+    <!-- Area to display the value from Lambda -->
+    <p id="lambdaValue"></p>
+
     <script>
         // Function to populate menus
         function populateMenus(data) {
@@ -32,10 +37,22 @@
         }
 
         // Fetch the data from the Lambda function through API Gateway
-        fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
-        .then(response => response.json())
-        .then(data => populateMenus(data))
-        .catch(error => console.error('Error:', error));
+               function getValueFromLambda() {
+            fetch('YOUR_API_GATEWAY_ENDPOINT')
+            .then(response => response.json())
+            .then(data => {
+                // Assuming the Lambda function sends back a key-value pair like { "lambdaValue": "Some Value" }
+                document.getElementById('lambdaValue').innerText = data.lambdaValue;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Add click event listener to the button
+        document.getElementById('lambdaButton').addEventListener('click', getValueFromLambda);
+
+        // Initial call to populate menus
+        getValueFromLambda(); // This also sets the initial value from Lambda
+  
     </script>
 </body>
 </html>
