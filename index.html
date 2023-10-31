@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selection Menus 12</title>
+    <title>Selection Menus 13</title>
     <script>
         // JavaScript to fetch and populate data will go here
     </script>
@@ -18,7 +18,10 @@
 
     <script>
         // Initialize the resselection variable with an empty object
-        resselection = {};
+        resselection = {
+            firstString: 'ads333',
+            secondString: 'jjj999'
+        };
         // We will fetch the data when the page loads
         window.onload = function() {
             // Assume your Lambda function endpoint is 'https://your-lambda-endpoint'
@@ -46,10 +49,7 @@
                 });
         };
 
-    resselection = {
-      firstString: 'ads333',
-      secondString: 'jjj999'
-    };
+
 
     function sendDataToLambda() {
 
