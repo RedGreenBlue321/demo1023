@@ -19,6 +19,8 @@
 <p id="response"></p>
 
     <script>
+        // Initialize the resselection variable with an empty object
+                        window.resselection = {};
         // We will fetch the data when the page loads
         window.onload = function() {
             // Assume your Lambda function endpoint is 'https://your-lambda-endpoint'
@@ -35,8 +37,7 @@
                             selectMenu.add(option);
                         });
 
-                        // Initialize the resselection variable with an empty object
-                        window.resselection = {};
+                        
 
                         // Add an event listener to update the resselection variable
                         selectMenu.addEventListener('change', function() {
