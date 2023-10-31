@@ -3,64 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lambda Function Calls</title>
+    <title>vvv Lambda Functions Example</title>
+    <script>
+        // Assuming you have set up AWS API Gateway to trigger the Lambda functions
+        const getSelectionsUrl = 'https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x';
+        const processSelectionsUrl = 'https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1';
+
+        // Function to call the first Lambda function to get selections
+        async function getSelections() {
+            try {
+                const response = await fetch(getSelectionsUrl);
+                const data = await response.json();
+                populateMenus(data);
+            } catch (error) {
+                console.error('Error fetching selections:', error);
+            }
+        }
+
+        // Function to populate the selection menus
+        function populateMenus(data) {
+            // Populate each menu with options
+            // This assumes 'data' is an object with keys that correspond to menu IDs
+            for (const menuId in data) {
+                const menu = document.getElementById(menuId);
+                data[menuId].forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option;
+                    optionElement.textContent = option;
+                    menu.appendChild(optionElement);
+                });
+            }
+        }
+
+        // Function to call the second Lambda function to process selections
+        async function processSelections() {
+            const selections = {
+                menu1: document.getElementById('menu1').value,
+                menu2: document.getElementById('menu2').value,
+                menu3: document.getElementById('menu3').value
+            };
+
+            try {
+                const response = await fetch(processSelectionsUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(selections),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const result = await response.json();
+                displayResult(result);
+            } catch (error) {
+                console.error('Error processing selections:', error);
+            }
+        }
+
+        // Function to display the combined result
+        function displayResult(result) {
+            document.getElementById('result').textContent = result.message;
+        }
+
+        // Call getSelections on page load
+        window.onload = getSelections;
+    </script>
 </head>
 <body>
-
-<div id="selections">
-    <!-- Nine selection menus -->
-    <select id="select1"></select>
-    <select id="select2"></select>
-    <!-- ... add more as needed ... -->
-    <select id="select9"></select>
-</div>
-<button onclick="sendSelections()">Submit</button>
-<p id="result">Result will appear here</p>
-
-<script>
-async function loadSelections() {
-    try {
-        const response = await fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1');
-        const data = await response.json();
-
-        for(let i=1; i<=9; i++) {
-            const selectBox = document.getElementById(`select${i}`);
-            data[`select${i}`].forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option;
-                opt.innerText = option;
-                selectBox.appendChild(opt);
-            });
-        }
-    } catch (error) {
-        console.error("Error loading selections:", error);
-    }
-}
-
-async function sendSelections() {
-    const selections = {};
-    for(let i=1; i<=9; i++) {
-        selections[`select${i}`] = document.getElementById(`select${i}`).value;
-    }
-
-    try {
-        const response = await fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(selections)
-        });
-        const data = await response.json();
-        document.getElementById('result').innerText = data.result;
-    } catch (error) {
-        console.error("Error sending selections:", error);
-    }
-}
-
-// Load selections when the page is loaded
-window.onload = loadSelections;
-</script>
-
+    <h1>Selections</h1>
+    <select id="menu1"></select>
+    <select id="menu2"></select>
+    <select id="menu3"></select>
+    <button onclick="processSelections()">Submit</button>
+    <div id="result"></div>
 </body>
 </html>
