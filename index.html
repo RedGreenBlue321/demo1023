@@ -2,69 +2,67 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lambda Function Caller</title>
+<title>Lambda Functions Interaction xxx</title>
 <script>
-// Fetch selections from Lambda on page load
-window.onload = async function() {
-  try {
-    const response = await fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x');
-    const data = await response.json();
-    // Assuming data comes back as an array of arrays for the selections
-    data.forEach((options, index) => {
-      let selectMenu = document.getElementById(`select${index + 1}`);
-      options.forEach(option => {
-        let opt = document.createElement('option');
-        opt.value = option;
-        opt.innerHTML = option;
-        selectMenu.appendChild(opt);
+// Fetch selection data from the first Lambda function on page load
+window.onload = function() {
+  fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
+    .then(response => response.json())
+    .then(data => {
+      // Assuming the data is an array of arrays for the selection options
+      const selections = document.querySelectorAll('.selection');
+      selections.forEach((selectElement, index) => {
+        data[index].forEach(optionValue => {
+          let option = new Option(optionValue, optionValue);
+          selectElement.add(option);
+        });
       });
     });
-  } catch (error) {
-    console.error('Error fetching selections:', error);
-  }
 };
 
-// Function to call Lambda
-async function callLambda() {
-  let selections = [];
-  for (let i = 1; i <= 9; i++) {
-    selections.push(document.getElementById(`select${i}`).value);
-  }
+// Function to call the second Lambda function with the selected values
+function combineSelections() {
+  const selections = Array.from(document.querySelectorAll('.selection'))
+    .map(select => select.value);
   
-  try {
-    const response = await fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
-      method: 'POST',
-      body: JSON.stringify({ selections }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    const result = await response.json();
-    document.getElementById('result').textContent = result.combined;
-  } catch (error) {
-    console.error('Error calling Lambda:', error);
-  }
+  fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ selections: selections }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Display the result
+    document.getElementById('result').textContent = data.result;
+  });
 }
 </script>
 </head>
 <body>
-<h1>Call Lambda Function</h1>
-<div>
+  <h1>Selection Menu</h1>
+  
   <!-- Selection Menus -->
-  <select id="select1"></select>
-  <select id="select2"></select>
-  <select id="select3"></select>
-  <select id="select4"></select>
-  <select id="select5"></select>
-  <select id="select6"></select>
-  <select id="select7"></select>
-  <select id="select8"></select>
-  <select id="select9"></select>
-</div>
-<!-- Button to Call Lambda -->
-<button onclick="callLambda()">Combine Selections</button>
-<!-- Result Display -->
-<div id="result"></div>
+  <div id="selection-menus">
+    <select class="selection"></select>
+    <select class="selection"></select>
+    <select class="selection"></select>
+    <select class="selection"></select>
+    <select class="selection"></select>
+    <select class="selection"></select>
+    <select class="selection"></select>
+    <select class="selection"></select>
+    <select class="selection"></select>
+  </div>
+  
+  <!-- Submit Button -->
+  <button onclick="combineSelections()">Combine Selections</button>
+  
+  <!-- Result Display -->
+  <div id="result"></div>
 </body>
 </html>
+
+
+
