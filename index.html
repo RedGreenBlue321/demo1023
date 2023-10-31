@@ -11,27 +11,36 @@
 </select>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const apiEndpoint = 'https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x'; // Replace with your API Gateway endpoint
+// This function populates the select menu with data from the Lambda function
+async function populateMenu(apiEndpoint) {
+    try {
+        const response = await fetch(apiEndpoint);
+        
+        if (!response.ok) {
+            // If the HTTP status code is not successful, throw an error
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    // Fetch the menu items from the Lambda function
-    fetch(apiEndpoint)
-        .then(response => response.json())
-        .then(data => {
-            const selectElement = document.getElementById('menuSelection');
-            selectElement.innerHTML = ''; // Clear the 'Loading...' or previous options
-            // Iterate over each item in the data and add it as an option to the select element
-            data.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item;
-                option.textContent = item;
-                selectElement.appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching data: ', error);
-            document.getElementById('menuSelection').innerHTML = '<option>Error loading data</option>';
-        });
+        const data = await response.json();
+        const selectElement = document.getElementById('menuSelection');
+        selectElement.innerHTML = ''; // Clear the 'Loading...' or previous options
+
+        // Add each item as an option to the select element
+        for (const item of data) {
+            let option = new Option(item, item);
+            selectElement.add(option);
+        }
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('menuSelection').innerHTML = '<option>Error loading data</option>';
+    }
+}
+
+// Event listener for DOMContentLoaded to ensure the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const apiEndpoint = 'https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x';
+    populateMenu(apiEndpoint);
 });
 </script>
 
