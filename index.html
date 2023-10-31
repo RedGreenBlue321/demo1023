@@ -1,48 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>AWS Lambda Selection Menu</title>
-</head>
-<body>
-
-<select id="menuSelection">
-    <option>Loading...</option>
-</select>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Selection Menus</title>
 <script>
-// This function populates the select menu with data from the Lambda function
-async function populateMenu(apiEndpoint) {
-    try {
-        const response = await fetch(apiEndpoint);
-        
-        if (!response.ok) {
-            // If the HTTP status code is not successful, throw an error
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch the initial data for the first menu
+    fetchSelections(1, null, function(selections) {
+        updateMenu('menu1', selections);
+    });
 
-        const data = await response.json();
-        const selectElement = document.getElementById('menuSelection');
-        selectElement.innerHTML = ''; // Clear the 'Loading...' or previous options
-
-        // Add each item as an option to the select element
-        for (const item of data) {
-            let option = new Option(item, item);
-            selectElement.add(option);
-        }
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        document.getElementById('menuSelection').innerHTML = '<option>Error loading data</option>';
+    // Add change event listeners to each menu
+    for (let i = 1; i <= 9; i++) {
+        document.getElementById('menu' + i).addEventListener('change', function(event) {
+            // Fetch the next menu's selections based on the current menu's choice
+            const nextMenuIndex = i + 1;
+            if (nextMenuIndex <= 9) {
+                fetchSelections(nextMenuIndex, event.target.value, function(selections) {
+                    updateMenu('menu' + nextMenuIndex, selections);
+                });
+            }
+        });
     }
+});
+
+// Function to call AWS Lambda and update the menus
+function fetchSelections(menuIndex, parentSelection, callback) {
+    let url = `YOUR_API_ENDPOINT/menu${menuIndex}`;
+    if (parentSelection) {
+        url += `?parentSelection=${parentSelection}`;
+    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            callback(data.selections); // Your Lambda function should return a JSON object with a `selections` array
+        })
+        .catch(error => console.error('Error fetching selections:', error));
 }
 
-// Event listener for DOMContentLoaded to ensure the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const apiEndpoint = 'https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x';
-    populateMenu(apiEndpoint);
-});
+// Function to update a menu with new options
+function updateMenu(menuId, selections) {
+    const menu = document.getElementById(menuId);
+    menu.innerHTML = ''; // Clear current options
+    selections.forEach(function(selection) {
+        const option = document.createElement('option');
+        option.value = selection;
+        option.textContent = selection;
+        menu.appendChild(option);
+    });
+}
 </script>
-
+</head>
+<body>
+<h1>Dynamic Selection Menus</h1>
+<div id="selection-menus">
+    <!-- Assuming there are 9 menus to be filled with dynamic selections -->
+    <select id="menu1"></select>
+    <select id="menu2"></select>
+    <select id="menu3"></select>
+    <select id="menu4"></select>
+    <select id="menu5"></select>
+    <select id="menu6"></select>
+    <select id="menu7"></select>
+    <select id="menu8"></select>
+    <select id="menu9"></select>
+</div>
 </body>
 </html>
