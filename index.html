@@ -18,7 +18,7 @@
 
     <script>
         // Initialize the resselection variable with an empty object
-        window.resselection = {};
+        resselection = {};
         // We will fetch the data when the page loads
         window.onload = function() {
             // Assume your Lambda function endpoint is 'https://your-lambda-endpoint'
@@ -38,9 +38,9 @@
                     
                         // Add an event listener to update the resselection variable
                         selectMenu.addEventListener('change', function() {
-                            window.resselection[menuId] = this.value;
+                            resselection[menuId] = this.value;
                             // For demonstration purposes, log the current state of resselection
-                            console.log(window.resselection);
+                            console.log(resselection);
                         });
                     });
                 });
@@ -54,7 +54,7 @@
     fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
       method: 'POST',
      
-      body: JSON.stringify(window.resselection), // 
+      body: JSON.stringify(resselection), // 
     })
     .then(response => response.json()) // 
     .then(data => {
