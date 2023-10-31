@@ -14,9 +14,7 @@
     // 发起一个POST请求到Lambda函数的API Gateway URL
     fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+     
       body: JSON.stringify(dataToSend), // 将对象转换为JSON字符串
     })
     .then(response => response.json()) // 解析JSON格式的响应
