@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to call AWS Lambda and update the menus
 function fetchSelections(menuIndex, parentSelection, callback) {
-    let url = `https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x/menu${menuIndex}`;
+    let url = `https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x`;
     if (parentSelection) {
         url += `?parentSelection=${parentSelection}`;
     }
