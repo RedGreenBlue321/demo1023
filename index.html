@@ -3,34 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Call Lambda Function</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Lambda Function Demo</title>
 </head>
 <body>
-    <select id="menu1" onchange="fetchData(2)"></select>
-    <select id="menu2" onchange="fetchData(3)"></select>
-    <!-- Add more selects as needed -->
+    <!-- 9 selection menus -->
+    <select id="menu1"></select>
+    <select id="menu2"></select>
+    <!-- ... (repeat for all menus) -->
+    <select id="menu9"></select>
 
     <script>
-        function fetchData(menuNum) {
-            // Replace this URL with your API Gateway URL.
-            const LAMBDA_API_URL = 'API endpoint: https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x';
-
-            // Get previous selection
-            let selection = $('#menu' + (menuNum - 1)).val();
-
-            $.post(LAMBDA_API_URL, { 'menu': menuNum, 'selection': selection }, function(data) {
-                $('#menu' + menuNum).empty();
-                data.options.forEach(opt => {
-                    $('#menu' + menuNum).append(new Option(opt, opt));
+        // Function to populate menus
+        function populateMenus(data) {
+            for (let i = 1; i <= 9; i++) {
+                const menu = document.getElementById(`menu${i}`);
+                data[`menu${i}`].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.innerText = item;
+                    menu.appendChild(option);
                 });
-            });
+            }
         }
 
-        // On document ready, fetch initial data
-        $(document).ready(function() {
-            fetchData(1);
-        });
+        // Fetch the data from the Lambda function through API Gateway
+        fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
+        .then(response => response.json())
+        .then(data => populateMenus(data))
+        .catch(error => console.error('Error:', error));
     </script>
 </body>
 </html>
