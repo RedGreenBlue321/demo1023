@@ -50,31 +50,7 @@
                 selectElement.appendChild(optElement);
             });
         }        
-        function updateSecondMenu() {
-            const firstSelect = document.getElementById('firstSelect');
-            const secondSelect = document.getElementById('secondSelect');
-            const selectedValue = firstSelect.value;
 
-            while (secondSelect.firstChild) {
-                secondSelect.removeChild(secondSelect.firstChild);
-            }
-
-            let options;
-            if (selectedValue === 'ZS') {
-                options = ['ZS-A', 'ZS-B', 'ZS-C'];
-            } else if (selectedValue === 'RS') {
-                options = ['RS-A', 'RS-B'];
-            }
-
-            if (options) {
-                options.forEach(option => {
-                    const optElement = document.createElement('option');
-                    optElement.value = option;
-                    optElement.textContent = option;
-                    secondSelect.appendChild(optElement);
-                });
-            }
-        }
 
         function getPrice() {
             const firstSelect = document.getElementById('firstSelect').value;
