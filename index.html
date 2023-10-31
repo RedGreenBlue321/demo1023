@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selection Menus</title>
+    <title>Selection Menus m</title>
     <script>
         // JavaScript to fetch and populate data will go here
     </script>
@@ -26,8 +26,19 @@
                         const selectMenu = document.getElementById(menuId);
                         data[`menu${index + 1}`].forEach(item => {
                             const option = document.createElement('option');
+                            option.value = item; // Make sure to set the value attribute
                             option.text = item;
                             selectMenu.add(option);
+                        });
+
+                        // Initialize the resselection variable with an empty object
+                        window.resselection = {};
+
+                        // Add an event listener to update the resselection variable
+                        selectMenu.addEventListener('change', function() {
+                            window.resselection[menuId] = this.value;
+                            // For demonstration purposes, log the current state of resselection
+                            console.log(window.resselection);
                         });
                     });
                 });
