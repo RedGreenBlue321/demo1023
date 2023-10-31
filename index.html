@@ -2,76 +2,66 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Lambda Functions yy Interaction xxx</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lambda Functions Example</title>
 <script>
-// Fetch selection data from the first Lambda function on page load
-window.onload = function() {
+// Function to call the first Lambda function and populate the selection menus
+function populateSelections() {
   fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
     .then(response => response.json())
     .then(data => {
-      // Assuming the data is an array of arrays for the selection options
-      const selections = document.querySelectorAll('.selection');
-      selections.forEach((selectElement, index) => {
-        data[index].forEach(optionValue => {
+      for (let i = 1; i <= 9; i++) {
+        const select = document.getElementById('select' + i);
+        data['menu' + i].forEach(optionValue => {
           let option = new Option(optionValue, optionValue);
-          selectElement.add(option);
+          select.appendChild(option);
         });
-      });
-    });
-};
+      }
+    })
+    .catch(error => console.error('Error:', error));
+}
 
-// Function to call the second Lambda function with the selected values
-function combineSelections() {
-  const selections = Array.from(document.querySelectorAll('.selection'))
-    .map(select => select.value);
-  
+// Function to call the second Lambda function with the selected options
+function submitSelections() {
+  const selections = {};
+  for (let i = 1; i <= 9; i++) {
+    selections['selection' + i] = document.getElementById('select' + i).value;
+  }
+
   fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ selections: selections }),
+    body: JSON.stringify(selections)
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
+  .then(response => response.json())
   .then(data => {
-    // Display the result
     document.getElementById('result').textContent = data.result;
   })
-  .catch(error => {
-    console.error('There was an error!', error);
-  });
+  .catch(error => console.error('Error:', error));
 }
 
+// Call populateSelections on page load
+window.onload = populateSelections;
 </script>
 </head>
 <body>
-  <h1>Selection Menu</h1>
-  
-  <!-- Selection Menus -->
-  <div id="selection-menus">
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
+
+<h1>Selection Menu</h1>
+<form id="selectionForm">
+  <div>
+    <!-- Dynamically populated selection menus -->
+    {[...Array(9)].map((_, i) => `
+    <label for="select${i+1}">Selection ${i+1}:</label>
+    <select id="select${i+1}"></select>
+    <br>
+    `).join('')}
   </div>
-  
-  <!-- Submit Button -->
-  <button onclick="combineSelections()">Combine Selections</button>
-  
-  <!-- Result Display -->
-  <div id="result"></div>
+  <input type="button" value="Submit" onclick="submitSelections()">
+</form>
+
+<div id="result"></div>
+
 </body>
 </html>
-
-
-
