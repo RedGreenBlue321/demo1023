@@ -1,58 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lambda Function Demo</title>
-</head>
-<body>
-    <!-- 9 selection menus -->
-    <select id="menu1"></select>
-    <select id="menu2"></select>
-    <select id="menu3"></select>
-    <select id="menu4"></select>
-    <select id="menu5"></select>
-    <select id="menu6"></select>
-    <select id="menu7"></select>
-    <select id="menu8"></select>
-    <select id="menu9"></select>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lambda Selections</title>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Call the Lambda function to populate the selection menus on page load
+    fetchLambdaData('getSelections', {});
 
-    <button id="lambdaButton">Get Value</button>
+    // Event listener for the submit button
+    document.getElementById('submit').addEventListener('click', function() {
+        // Collect selections
+        const selections = Array.from({ length: 9 }).map((_, i) => {
+            return document.getElementById(`select${i + 1}`).value;
+        });
 
-    <!-- Area to display the value from Lambda -->
-    <p id="lambdaValue"></p>
+        // Send selections to Lambda
+        fetchLambdaData('processSelections', { selections: selections });
+    });
+});
 
-    <script>
-        // Function to populate menus
-        function populateMenus(data) {
-            for (let i = 1; i <= 9; i++) {
-                const menu = document.getElementById(`menu${i}`);
-                data[`menu${i}`].forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.innerText = item;
-                    menu.appendChild(option);
+// Function to communicate with the Lambda function
+function fetchLambdaData(action, data) {
+    const apiEndpoint = 'https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x'; // Replace with your API Gateway URL
+
+    fetch(apiEndpoint, {
+        method: 'POST',
+        body: JSON.stringify({ action, ...data }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (action === 'getSelections') {
+            // Populate the selection menus
+            for (let i = 0; i < 9; i++) {
+                const select = document.getElementById(`select${i + 1}`);
+                data.selections[i].forEach(optionValue => {
+                    const option = new Option(optionValue, optionValue);
+                    select.add(option);
                 });
             }
+        } else if (action === 'processSelections') {
+            // Handle the processed data
+            document.getElementById('result').textContent = data.result;
         }
-
-        // Fetch the data from the Lambda function through API Gateway
-               function getValueFromLambda() {
-            fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
-            .then(response => response.json())
-            .then(data => {
-                // Assuming the Lambda function sends back a key-value pair like { "lambdaValue": "Some Value" }
-                document.getElementById('lambdaValue').innerText = data.lambdaValue;
-            })
-            .catch(error => console.error('Error:', error));
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+</head>
+<body>
+<div>
+    <!-- Selection Menus -->
+    <div id="selection-menus">
+        <script>
+        for (let i = 1; i <= 9; i++) {
+            document.write(`<label for="select${i}">Selection ${i}:</label>
+            <select id="select${i}"></select><br/>`);
         }
+        </script>
+    </div>
 
-        // Add click event listener to the button
-        document.getElementById('lambdaButton').addEventListener('click', getValueFromLambda);
+    <!-- Submit Button -->
+    <button id="submit">Submit</button>
 
-        // Initial call to populate menus
-        getValueFromLambda(); // This also sets the initial value from Lambda
-  
-    </script>
+    <!-- Result Display -->
+    <div id="result"></div>
+</div>
 </body>
 </html>
