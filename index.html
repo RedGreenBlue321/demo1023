@@ -32,12 +32,21 @@ function combineSelections() {
     },
     body: JSON.stringify({ selections: selections }),
   })
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
   .then(data => {
     // Display the result
     document.getElementById('result').textContent = data.result;
+  })
+  .catch(error => {
+    console.error('There was an error!', error);
   });
 }
+
 </script>
 </head>
 <body>
