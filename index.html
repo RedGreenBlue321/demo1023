@@ -13,14 +13,12 @@
     <select id="menu2"></select>
     <select id="menu3"></select>
     <select id="menu4"></select>
-  <button onclick="sendDataToLambda()">发送数据到Lambda</button>
-
-<!-- 在这里显示Lambda函数的响应 -->
-<p id="response"></p>
+    <button onclick="sendDataToLambda()">Lambda</button>
+    <p id="response"></p>
 
     <script>
         // Initialize the resselection variable with an empty object
-                        window.resselection = {};
+        window.resselection = {};
         // We will fetch the data when the page loads
         window.onload = function() {
             // Assume your Lambda function endpoint is 'https://your-lambda-endpoint'
@@ -37,8 +35,7 @@
                             selectMenu.add(option);
                         });
 
-                        
-
+                    
                         // Add an event listener to update the resselection variable
                         selectMenu.addEventListener('change', function() {
                             window.resselection[menuId] = this.value;
@@ -51,19 +48,17 @@
 
 
 
-        function sendDataToLambda() {
-    // 将数据打包成一个对象
-    var dataToSend = window.resselection;
+    function sendDataToLambda() {
 
-    // 发起一个POST请求到Lambda函数的API Gateway URL
+    //
     fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
       method: 'POST',
      
-      body: JSON.stringify(dataToSend), // 将对象转换为JSON字符串
+      body: JSON.stringify(window.resselection), // 
     })
-    .then(response => response.json()) // 解析JSON格式的响应
+    .then(response => response.json()) // 
     .then(data => {
-      // 在页面上显示响应结果
+      // 
       document.getElementById('response').innerText = data.combinedString;
     })
     .catch((error) => {
