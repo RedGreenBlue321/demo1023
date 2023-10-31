@@ -1,63 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Lambda Functions Interaction</title>
-<script>
-// Fetch selection data from the first Lambda function on page load
-window.onload = function() {
-  fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
-    .then(response => response.json())
-    .then(data => {
-      // Assuming the data is an array of arrays for the selection options
-      const selections = document.querySelectorAll('.selection');
-      selections.forEach((selectElement, index) => {
-        data[index].forEach(optionValue => {
-          let option = new Option(optionValue, optionValue);
-          selectElement.add(option);
-        });
-      });
-    });
-};
-
-// Function to call the second Lambda function with the selected values
-function combineSelections() {
-  const selections = Array.from(document.querySelectorAll('.selection'))
-    .map(select => select.value);
-  
-  fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
-    method: 'POST',
- 
-    body: JSON.stringify({ selections: selections }),
-  })
-  .then(response => response.json())
-  .then(data => {
-    // Display the result
-    document.getElementById('result').textContent = data.result;
-  });
-}
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selection Menus m</title>
+    <script>
+        // JavaScript to fetch and populate data will go here
+    </script>
 </head>
 <body>
-  <h1>Selection Menu</h1>
-  
-  <!-- Selection Menus -->
-  <div id="selection-menus">
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-    <select class="selection"></select>
-  </div>
-  
-  <!-- Submit Button -->
-  <button onclick="combineSelections()">Combine Selections</button>
-  
-  <!-- Result Display -->
-  <div id="result"></div>
+    <select id="menu1"></select>
+    <select id="menu2"></select>
+    <select id="menu3"></select>
+    <select id="menu4"></select>
+  <button onclick="sendDataToLambda()">发送数据到Lambda</button>
+
+<!-- 在这里显示Lambda函数的响应 -->
+<p id="response"></p>
+
+    <script>
+        // We will fetch the data when the page loads
+        window.onload = function() {
+            // Assume your Lambda function endpoint is 'https://your-lambda-endpoint'
+            fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
+                .then(response => response.json())
+                .then(data => {
+                    // Populate the select menus with the received data
+                    ['menu1', 'menu2', 'menu3', 'menu4'].forEach((menuId, index) => {
+                        const selectMenu = document.getElementById(menuId);
+                        data[`menu${index + 1}`].forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item; // Make sure to set the value attribute
+                            option.text = item;
+                            selectMenu.add(option);
+                        });
+
+                        // Initialize the resselection variable with an empty object
+                        window.resselection = {};
+
+                        // Add an event listener to update the resselection variable
+                        selectMenu.addEventListener('change', function() {
+                            window.resselection[menuId] = this.value;
+                            // For demonstration purposes, log the current state of resselection
+                            console.log(window.resselection);
+                        });
+                    });
+                });
+        };
+
+
+
+        function sendDataToLambda() {
+    // 将数据打包成一个对象
+    var dataToSend = {
+      firstString: 'ads333',
+      secondString: 'jjj999'
+    };
+
+    // 发起一个POST请求到Lambda函数的API Gateway URL
+    fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
+      method: 'POST',
+     
+      body: JSON.stringify(dataToSend), // 将对象转换为JSON字符串
+    })
+    .then(response => response.json()) // 解析JSON格式的响应
+    .then(data => {
+      // 在页面上显示响应结果
+      document.getElementById('response').innerText = data.combinedString;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+      
+    </script>
 </body>
 </html>
+
+
