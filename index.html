@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selection Menus 13</title>
+    <title>Selection Menus 14</title>
     <script>
         // JavaScript to fetch and populate data will go here
     </script>
@@ -17,38 +17,50 @@
     <p id="response"></p>
 
     <script>
-        // Initialize the resselection variable with an empty object
-        resselection = {
-            firstString: 'ads333',
-            secondString: 'jjj999'
-        };
-        // We will fetch the data when the page loads
-        window.onload = function() {
-            // Assume your Lambda function endpoint is 'https://your-lambda-endpoint'
-            fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
-                .then(response => response.json())
-                .then(data => {
-                    // Populate the select menus with the received data
-                    ['menu1', 'menu2', 'menu3', 'menu4'].forEach((menuId, index) => {
-                        const selectMenu = document.getElementById(menuId);
-                        data[`menu${index + 1}`].forEach(item => {
-                            const option = document.createElement('option');
-                            option.value = item; // Make sure to set the value attribute
-                            option.text = item;
-                            selectMenu.add(option);
-                        });
+// Initialize resselection with pre-defined properties
+let resselection = {
+    firstString: 'ads333',
+    secondString: 'jjj999'
+};
 
-                    
-                        // Add an event listener to update the resselection variable
-                        selectMenu.addEventListener('change', function() {
-                            resselection[menuId] = this.value;
-                            // For demonstration purposes, log the current state of resselection
-                            console.log(resselection);
-                        });
-                    });
+window.onload = function() {
+    fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
+        .then(response => response.json())
+        .then(data => {
+            // Populate the select menus with the received data
+            ['menu1', 'menu2', 'menu3', 'menu4'].forEach((menuId, index) => {
+                const selectMenu = document.getElementById(menuId);
+                data[`menu${index + 1}`].forEach(item => {
+                    const option = new Option(item, item); // Simplified option creation
+                    selectMenu.add(option);
                 });
-        };
+                
+                // Add an event listener to update the resselection variable
+                selectMenu.addEventListener('change', function() {
+                    // Update the corresponding property in the resselection object
+                    // Assuming you want to map them in order: menu1 -> firstString, menu2 -> secondString, etc.
+                    let propertyMap = {
+                        menu1: 'firstString',
+                        menu2: 'secondString'
+                        // If you have more mappings, continue here
+                        // menu3: 'thirdString',
+                        // menu4: 'fourthString',
+                    };
 
+                    // Only update if the menuId has a corresponding property to map to
+                    if (propertyMap[menuId]) {
+                        resselection[propertyMap[menuId]] = this.value;
+                    } else {
+                        // If no predefined mapping, just use the menuId itself
+                        resselection[menuId] = this.value;
+                    }
+                    
+                    // For demonstration purposes, log the current state of resselection
+                    console.log(resselection);
+                });
+            });
+        });
+};
 
 
     function sendDataToLambda() {
