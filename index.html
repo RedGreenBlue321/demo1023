@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Data to Lambda</title>
-    <script>
-        function sendDataToLambda() {
-            // The data to send
-            const data = {
-                value1: "xyz000",
-                value2: "asd999"
-            };
+<meta charset="UTF-8">
+<title>发送数据到Lambda函数</title>
+<script>
+  function sendDataToLambda() {
+    // 将数据打包成一个对象
+    var dataToSend = {
+      firstString: 'ads333',
+      secondString: 'jjj999'
+    };
 
-            // The endpoint URL of your Lambda function
-            const endpointUrl = 'https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1';
-
-            // Send the data using a POST request
-            fetch(endpointUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display the result in the resultDiv
-                document.getElementById('resultDiv').textContent = data.combinedResult;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-    </script>
+    // 发起一个POST请求到Lambda函数的API Gateway URL
+    fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend), // 将对象转换为JSON字符串
+    })
+    .then(response => response.json()) // 解析JSON格式的响应
+    .then(data => {
+      // 在页面上显示响应结果
+      document.getElementById('response').innerText = data.combinedString;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+</script>
 </head>
 <body>
-    <button onclick="sendDataToLambda()">Send to Lambda</button>
-    <div id="resultDiv">Result will be displayed here.</div>
+
+<button onclick="sendDataToLambda()">发送数据到Lambda</button>
+
+<!-- 在这里显示Lambda函数的响应 -->
+<p id="response"></p>
+
 </body>
 </html>
