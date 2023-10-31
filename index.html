@@ -1,67 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lambda Functions Example</title>
-<script>
-// Function to call the first Lambda function and populate the selection menus
-function populateSelections() {
-  fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
-    .then(response => response.json())
-    .then(data => {
-      for (let i = 1; i <= 9; i++) {
-        const select = document.getElementById('select' + i);
-        data['menu' + i].forEach(optionValue => {
-          let option = new Option(optionValue, optionValue);
-          select.appendChild(option);
-        });
-      }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Function to call the second Lambda function with the selected options
-function submitSelections() {
-  const selections = {};
-  for (let i = 1; i <= 9; i++) {
-    selections['selection' + i] = document.getElementById('select' + i).value;
-  }
-
-  fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(selections)
-  })
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('result').textContent = data.result;
-  })
-  .catch(error => console.error('Error:', error));
-}
-
-// Call populateSelections on page load
-window.onload = populateSelections;
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lambda Function Calls</title>
 </head>
 <body>
 
-<h1>Selection Menu</h1>
-<form id="selectionForm">
-  <div>
-    <!-- Dynamically populated selection menus -->
-    {[...Array(9)].map((_, i) => `
-    <label for="select${i+1}">Selection ${i+1}:</label>
-    <select id="select${i+1}"></select>
-    <br>
-    `).join('')}
-  </div>
-  <input type="button" value="Submit" onclick="submitSelections()">
-</form>
+<div id="selections">
+    <!-- Nine selection menus -->
+    <select id="select1"></select>
+    <select id="select2"></select>
+    <!-- ... add more as needed ... -->
+    <select id="select9"></select>
+</div>
+<button onclick="sendSelections()">Submit</button>
+<p id="result">Result will appear here</p>
 
-<div id="result"></div>
+<script>
+async function loadSelections() {
+    try {
+        const response = await fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1');
+        const data = await response.json();
+
+        for(let i=1; i<=9; i++) {
+            const selectBox = document.getElementById(`select${i}`);
+            data[`select${i}`].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.innerText = option;
+                selectBox.appendChild(opt);
+            });
+        }
+    } catch (error) {
+        console.error("Error loading selections:", error);
+    }
+}
+
+async function sendSelections() {
+    const selections = {};
+    for(let i=1; i<=9; i++) {
+        selections[`select${i}`] = document.getElementById(`select${i}`).value;
+    }
+
+    try {
+        const response = await fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(selections)
+        });
+        const data = await response.json();
+        document.getElementById('result').innerText = data.result;
+    } catch (error) {
+        console.error("Error sending selections:", error);
+    }
+}
+
+// Load selections when the page is loaded
+window.onload = loadSelections;
+</script>
 
 </body>
 </html>
