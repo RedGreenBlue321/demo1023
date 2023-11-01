@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selection Menus 17</title>
+    <title>Selection Menus 18</title>
     <script>
         // JavaScript to fetch and populate data will go here
     </script>
@@ -26,42 +26,54 @@ let resselection = {
 };
 
 window.onload = function() {
+    let menu1Selection = null;
+
     fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
         .then(response => response.json())
         .then(data => {
-            // Populate the select menus with the received data
-            ['menu1', 'menu2', 'menu3', 'menu4'].forEach((menuId, index) => {
-                const selectMenu = document.getElementById(menuId);
-                data[`menu${index + 1}`].forEach(item => {
-                    const option = new Option(item, item); // Simplified option creation
-                    selectMenu.add(option);
-                });
-                
-                // Add an event listener to update the resselection variable
-                selectMenu.addEventListener('change', function() {
-                    // Update the corresponding property in the resselection object
-                    // Assuming you want to map them in order: menu1 -> firstString, menu2 -> secondString, etc.
-                    let propertyMap = {
-                        menu1: 'firstString',
-                        menu2: 'secondString',
-                        menu3: 'thirdString',
-                        menu4: 'fourthString'
-                    };
+            const menu1 = document.getElementById('menu1');
+            const menu2 = document.getElementById('menu2');
 
-                    // Only update if the menuId has a corresponding property to map to
-                    if (propertyMap[menuId]) {
-                        resselection[propertyMap[menuId]] = this.value;
-                    } else {
-                        // If no predefined mapping, just use the menuId itself
-                        resselection[menuId] = this.value;
-                    }
-                    
-                    // For demonstration purposes, log the current state of resselection
-                    console.log(resselection);
-                });
+            // Populate the menu1 with the received data
+            data.menu1.forEach(item => {
+                const option = new Option(item, item); // Simplified option creation
+                menu1.add(option);
             });
+
+            // Event listener for menu1 to update menu2 based on the selection
+            menu1.addEventListener('change', function() {
+                menu1Selection = this.value;
+                // Fetch the options for menu2 based on menu1 selection
+                fetchMenu2Options(menu1Selection);
+
+                // Update resselection object
+                resselection.firstString = this.value;
+                console.log(resselection);
+            });
+
+            function fetchMenu2Options(selection) {
+                // Clear existing options
+                menu2.innerHTML = '';
+                // Populate the menu2 with options dependent on menu1 selection
+                (data.dependentOptions[selection] || []).forEach(item => {
+                    const option = new Option(item, item);
+                    menu2.add(option);
+                });
+            }
+
+            // Add an event listener to update the resselection variable for menu2
+            menu2.addEventListener('change', function() {
+                resselection.secondString = this.value;
+                console.log(resselection);
+            });
+
+            // Initialize menu2 with options dependent on the first available selection in menu1
+            if (data.menu1.length > 0) {
+                fetchMenu2Options(data.menu1[0]);
+            }
         });
 };
+
 
 
     function sendDataToLambda() {
