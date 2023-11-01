@@ -11,8 +11,8 @@
 <body>
     <select id="menu1"></select>
     <select id="menu2"></select>
-    <select id="menu3"></select>
-    <select id="menu4"></select>
+    <input type="text" id="input3" placeholder="Enter third value" />
+    <input type="text" id="input4" placeholder="Enter fourth value" />
     <button onclick="sendDataToLambda()">Lambda</button>
     <p id="response"></p>
 
@@ -78,6 +78,8 @@ window.onload = function() {
 
     function sendDataToLambda() {
 
+    resselection.thirdString = document.getElementById('input3').value;
+    resselection.fourthString = document.getElementById('input4').value;
     //
     fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
       method: 'POST',
