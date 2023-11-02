@@ -3,18 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 18</title>
+    <title>Quote Cal 19</title>
+    <style>
+        /* Add CSS to center the content */
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Style the form elements */
+        select, input[type="text"], button {
+            margin: 5px 0;
+        }
+        
+        /* Add some style to the button */
+        button {
+            padding: 5px 15px;
+        }
+        
+        /* Style for the response paragraph */
+        #response {
+            margin-top: 10px;
+        }
+    </style>
     <script>
         // JavaScript to fetch and populate data will go here
     </script>
 </head>
 <body>
+    <div class="container"> <!-- Container to hold the content -->
     <select id="menu1"></select>
     <select id="menu2"></select>
     <input type="text" id="input3" placeholder="Enter height" />
     <input type="text" id="input4" placeholder="Enter width" />
     <button onclick="sendDataToLambda()">Get the price</button>
     <p id="response"></p>
+    </div>
 
     <script>
 // Initialize resselection with pre-defined properties
