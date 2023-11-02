@@ -41,6 +41,7 @@
     <input type="text" id="input3" placeholder="Enter height" />
     <input type="text" id="input4" placeholder="Enter width" />
     <button onclick="sendDataToLambda()">Get the price</button>
+    <button onclick="startNewSelection()">Start New Selection</button>
     <p id="response"></p>
     </div>
 
@@ -102,8 +103,6 @@ window.onload = function() {
         });
 };
 
-
-
     function sendDataToLambda() {
 
     resselection.thirdString = document.getElementById('input3').value;
@@ -117,14 +116,40 @@ window.onload = function() {
     .then(response => response.json()) // 
     .then(data => {
       // 
-      document.getElementById('response').innerText = data.combinedString;
+        let currentResponse = document.getElementById('response').innerHTML;
+            let newResponse = `<p>${data.combinedString}</p>`;
+    //  document.getElementById('response').innerText = data.combinedString;
+        document.getElementById('response').innerHTML = currentResponse + newResponse;
     })
     .catch((error) => {
       console.error('Error:', error);
     });
   }
-      
-    </script>
+        function startNewSelection() {
+        // Clear current selections and inputs
+        document.getElementById('menu1').selectedIndex = 0;
+        document.getElementById('menu2').selectedIndex = 0;
+        document.getElementById('input3').value = '';
+        document.getElementById('input4').value = '';
+
+        // Optionally, if you want to also clear the previous response, you can uncomment the next line
+        // document.getElementById('response').innerHTML = '';
+
+        // Update resselection to start fresh
+        resselection.firstString = ' ';
+        resselection.secondString = ' ';
+        resselection.thirdString = ' ';
+        resselection.fourthString = ' ';
+
+        // Initiate a new fetch to update the second menu based on the default (first) selection of the first menu
+        // This assumes that you have a function like fetchMenu2Options as per your existing onload event
+        // fetchMenu2Options(document.getElementById('menu1').value); // Uncomment if needed
+    }
+
+
+
+        
+</script>
 </body>
 </html>
 
