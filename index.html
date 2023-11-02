@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 19</title>
+    <title>Quote Cal 20</title>
     <style>
         body, html {
             height: 100%;
@@ -41,8 +41,11 @@
     <input type="text" id="input3" placeholder="Enter height" />
     <input type="text" id="input4" placeholder="Enter width" />
     <button onclick="sendDataToLambda()">Get the price</button>
-    <button onclick="startNewSelection()">Start New Selection</button>
+    <button onclick="startNextSelection()">Start Next Selection</button>
     <p id="response"></p>
+        <button onclick="sumPrices()">Sum All Prices</button>
+        <div id="response"></div>
+        <div id="totalPrice">Total Price: 0</div>
     </div>
 
     <script>
@@ -117,7 +120,9 @@ window.onload = function() {
     .then(data => {
       // 
         let currentResponse = document.getElementById('response').innerHTML;
-            let newResponse = `<p>${data.combinedString}</p>`;
+          //  let newResponse = `<p>${data.combinedString}</p>`;
+        let newResponse = `<p class="price-quote">${data.combinedString}</p>`;
+
     //  document.getElementById('response').innerText = data.combinedString;
         document.getElementById('response').innerHTML = currentResponse + newResponse;
     })
@@ -125,7 +130,7 @@ window.onload = function() {
       console.error('Error:', error);
     });
   }
-        function startNewSelection() {
+        function startNextSelection() {
         // Clear current selections and inputs
         document.getElementById('menu1').selectedIndex = 0;
         document.getElementById('menu2').selectedIndex = 0;
@@ -145,7 +150,22 @@ window.onload = function() {
         // This assumes that you have a function like fetchMenu2Options as per your existing onload event
         // fetchMenu2Options(document.getElementById('menu1').value); // Uncomment if needed
     }
+function sumPrices() {
+            let responses = document.querySelectorAll('#response p');
+            let totalPrice = 0;
 
+            responses.forEach((response) => {
+                // Extract price from the paragraph content
+                let priceText = response.textContent || response.innerText;
+                let matches = priceText.match(/Total price: (\d+) CAD/);
+                if (matches && matches[1]) {
+                    totalPrice += parseInt(matches[1], 10);
+                }
+            });
+
+            // Display the total price
+            document.getElementById('totalPrice').innerText = 'Total Price: ' + totalPrice + ' CAD';
+        }
 
 
         
