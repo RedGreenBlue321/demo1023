@@ -43,9 +43,10 @@
     <button onclick="sendDataToLambda()">Get the price</button>
     <button onclick="startNextSelection()">Start Next Selection</button>
     <p id="response"></p>
-        <button onclick="sumPrices()">Sum All Prices</button>
-        <div id="response"></div>
-        <div id="totalPrice">Total Price: 0</div>
+    <button onclick="sumPrices()">Sum All Prices</button>
+    <div id="response"></div>
+    <div id="totalPrice">Total Price: 0</div>
+    <button onclick="resetForm()">Start New Selection</button>
     </div>
 
     <script>
@@ -166,7 +167,38 @@ function sumPrices() {
             // Display the total price
             document.getElementById('totalPrice').innerText = 'Total Price: ' + totalPrice + ' CAD';
         }
+function resetForm() {
+    // Clear the selection fields
+    document.getElementById('menu1').selectedIndex = 0;
+    document.getElementById('menu2').selectedIndex = 0;
+    document.getElementById('input3').value = '';
+    document.getElementById('input4').value = '';
 
+    // Clear the response display
+    document.getElementById('response').innerHTML = '';
+    
+    // Clear the total price if needed
+    document.getElementById('totalPrice').innerText = 'Total Price: 0';
+
+    // Reset the resselection object
+    resselection.firstString = ' ';
+    resselection.secondString = ' ';
+    resselection.thirdString = ' ';
+    resselection.fourthString = ' ';
+
+    // If needed, also reinitialize the menus (depends on your application logic)
+    // initializeMenus();
+}
+
+// Optional: Add this function if you need to re-fetch the initial options for your select menus.
+// This would replace your existing window.onload initialization.
+function initializeMenus() {
+    fetch('https://pu14ug6ii9.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x')
+        .then(response => response.json())
+        .then(data => {
+            // ... (existing code to populate menus)
+        });
+}
 
         
 </script>
