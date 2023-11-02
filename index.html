@@ -5,29 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quote Cal 19</title>
     <style>
-        /* Add CSS to center the content */
         body, html {
             height: 100%;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
         }
 
-        /* Style the form elements */
-        select, input[type="text"], button {
-            margin: 5px 0;
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        
-        /* Add some style to the button */
-        button {
-            padding: 5px 15px;
+
+        select, input, button {
+            margin: 5px 0; /* Margin for spacing out elements */
+            width: 80%; /* Set a width or max-width for better control */
+            max-width: 300px; /* You can set a max-width if needed */
         }
-        
-        /* Style for the response paragraph */
+
         #response {
             margin-top: 10px;
+            text-align: center;
         }
     </style>
     <script>
