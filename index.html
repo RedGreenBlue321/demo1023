@@ -158,7 +158,7 @@ function sumPrices() {
             responses.forEach((response) => {
                 // Extract price from the paragraph content
                 let priceText = response.textContent || response.innerText;
-                let matches = priceText.match(/Total price: (\d+) CAD/);
+                let matches = priceText.match(/Price: (\d+) CAD/);
                 if (matches && matches[1]) {
                     totalPrice += parseInt(matches[1], 10);
                 }
