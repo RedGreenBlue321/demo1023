@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 23</title>
+    <title>Quote Cal 22</title>
     <style>
         body, html {
             height: 100%;
@@ -117,7 +117,6 @@ window.onload = function() {
     //
     fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
       method: 'POST',
-     
       body: JSON.stringify(resselection), // 
     })
     .then(response => response.json()) // 
@@ -125,7 +124,7 @@ window.onload = function() {
       // 
         let currentResponse = document.getElementById('response').innerHTML;
           //  let newResponse = `<p>${data.combinedString}</p>`;
-        let newResponse = `<p class="price-quote">${data.combinedString}</p>`;
+        let newResponse = `<p class="price-quote">${data.combinedString} <button onclick="deletePriceQuote(this)">Delete</button></p>`;
 
     //  document.getElementById('response').innerText = data.combinedString;
         document.getElementById('response').innerHTML = currentResponse + newResponse;
@@ -170,6 +169,13 @@ function sumPrices() {
             // Display the total price
             document.getElementById('totalPrice').innerText = 'Total Price: ' + totalPrice + ' CAD';
         }
+
+function deletePriceQuote(button) {
+    // Remove the parent paragraph of the clicked button
+    button.parentElement.remove();
+    sumPrices(); // Update the total price after deletion
+}
+        
 function resetForm() {
     // Clear the selection fields
     document.getElementById('menu1').selectedIndex = 0;
