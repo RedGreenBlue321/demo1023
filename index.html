@@ -126,9 +126,12 @@ window.onload = function() {
     .then(response => response.json()) // 
     .then(data => {
       // 
-        let currentResponse = document.getElementById('response').innerHTML;
-        let newPrice = price * multiplier;  
-        let newResponse = `<p class="price-quote">${data.combinedString} <button onclick="deletePriceQuote(this)">Delete</button></p>`;
+                let price = parseInt(data.combinedString.match(/Price: (\d+)/)[1]);
+                let newPrice = price * multiplier; // Multiply the price
+                let newResponse = `<p class="price-quote">Price: ${newPrice} CAD <button onclick="deletePriceQuote(this)">Delete</button></p>`;
+
+      //  let currentResponse = document.getElementById('response').innerHTML;
+      //  let newResponse = `<p class="price-quote">${data.combinedString} <button onclick="deletePriceQuote(this)">Delete</button></p>`;
 
     //  document.getElementById('response').innerText = data.combinedString;
         document.getElementById('response').innerHTML = currentResponse + newResponse;
