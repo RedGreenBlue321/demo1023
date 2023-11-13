@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 24</title>
+    <title>Quote Cal 25</title>
     <style>
         body, html {
             height: 100%;
@@ -61,7 +61,8 @@ let resselection = {
     firstString: ' ',
     secondString: ' ',
     thirdString: ' ',
-    fourthString: ' '
+    fourthString: ' ',
+    fifthString: ' '
 };
 
 window.onload = function() {
@@ -141,6 +142,7 @@ window.onload = function() {
         document.getElementById('menu2').selectedIndex = 0;
         document.getElementById('input3').value = '';
         document.getElementById('input4').value = '';
+        document.getElementById('input5').value = '';
 
         // Optionally, if you want to also clear the previous response, you can uncomment the next line
         // document.getElementById('response').innerHTML = '';
@@ -150,6 +152,7 @@ window.onload = function() {
         resselection.secondString = ' ';
         resselection.thirdString = ' ';
         resselection.fourthString = ' ';
+        resselection.fifthString = ' ';
 
         // Initiate a new fetch to update the second menu based on the default (first) selection of the first menu
         // This assumes that you have a function like fetchMenu2Options as per your existing onload event
@@ -184,6 +187,7 @@ function resetForm() {
     document.getElementById('menu2').selectedIndex = 0;
     document.getElementById('input3').value = '';
     document.getElementById('input4').value = '';
+    document.getElementById('input5').value = '';
 
     // Clear the response display
     document.getElementById('response').innerHTML = '';
@@ -196,6 +200,7 @@ function resetForm() {
     resselection.secondString = ' ';
     resselection.thirdString = ' ';
     resselection.fourthString = ' ';
+    resselection.fifthString = ' ';
 
     // If needed, also reinitialize the menus (depends on your application logic)
     // initializeMenus();
