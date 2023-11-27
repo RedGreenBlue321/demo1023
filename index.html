@@ -74,6 +74,9 @@
     <button onclick="sumPrices()">Sum all prices</button>
     <div id="responsexy"></div>
     <div id="totalPrice">Total price: </div>
+    <input type="text" id="discountInput" placeholder="Please input discount" />
+    <button onclick="calculateDiscountedPrice()">Get the new price</button>
+    <div id="discountedPrice"></div>
     <p> </p>
     <p> </p>
     <button onclick="resetForm()">Clear all selection</button>
@@ -205,6 +208,23 @@ function sumPrices() {
             // Display the total price
             document.getElementById('totalPrice').innerText = 'Total Price: ' + totalPrice + ' CAD';
         }
+function calculateDiscountedPrice() {
+    let totalPriceElement = document.getElementById('totalPrice');
+    let discountInput = document.getElementById('discountInput').value;
+    let disc = isNaN(parseFloat(discountInput)) ? 0 : parseFloat(discountInput);
+    
+    // Extract total price value
+    let totalPriceText = totalPriceElement.innerText;
+    let matches = totalPriceText.match(/Total Price: (\d+)/);
+    let totalPrice = matches ? parseInt(matches[1], 10) : 0;
+
+    // Calculate discounted price
+    let discountedPrice = totalPrice * (1 - disc * 0.01);
+    
+    // Display the discounted price
+    document.getElementById('discountedPrice').innerText = 'Discounted Price: ' + discountedPrice.toFixed(2) + ' CAD';
+}
+
 
 function deletePriceQuote(button) {
     // Remove the parent paragraph of the clicked button
