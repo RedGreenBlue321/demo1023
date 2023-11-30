@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 31 test</title>
+    <title>Quote Cal 32 test</title>
     <style>
         body, html {
             height: 100%;
@@ -79,10 +79,20 @@
     <input type="text" id="input5" placeholder="Enter number" />
 
 <div id="additionalMenus" style="display: none;">
-    <select id="menu3"></select><input type="text" id="input6" placeholder="Enter value" />
-    <select id="menu4"></select><input type="text" id="input7" placeholder="Enter value" />
-    <select id="menu5"></select><input type="text" id="input8" placeholder="Enter value" />
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <select id="menu3" style="margin-right: 10px;"></select>
+        <input type="text" id="input6" placeholder="Enter value" />
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <select id="menu4" style="margin-right: 10px;"></select>
+        <input type="text" id="input7" placeholder="Enter value" />
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <select id="menu5" style="margin-right: 10px;"></select>
+        <input type="text" id="input8" placeholder="Enter value" />
+    </div>
 </div>
+
         
     <button onclick="sendDataToLambda()">Get the price</button>
     <p id="response" ></p>
