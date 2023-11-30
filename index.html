@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 32 test</title>
+    <title>Quote Cal 33 test</title>
     <style>
         body, html {
             height: 100%;
@@ -303,6 +303,14 @@ function resetForm() {
     resselection.thirdString = ' ';
     resselection.fourthString = ' ';
     resselection.fifthString = ' ';
+
+    document.getElementById('additionalMenus').style.display = 'none';
+    document.getElementById('menu3').selectedIndex = 0;
+    document.getElementById('menu4').selectedIndex = 0;
+    document.getElementById('menu5').selectedIndex = 0;
+    document.getElementById('input6').value = '';
+    document.getElementById('input7').value = '';
+    document.getElementById('input8').value = '';
 
     // If needed, also reinitialize the menus (depends on your application logic)
     // initializeMenus();
