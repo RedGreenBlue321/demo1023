@@ -142,6 +142,10 @@ window.onload = function() {
                 if (menu1Selection === 'RB') {
                     document.getElementById('additionalMenus').style.display = 'block';
                     fetchMenu3Options(menu1Selection);
+
+                    resselection.sixthString = document.getElementById('menu3').value;
+                    resselection.sevenththString = document.getElementById('input6').value;
+                    
                 } else {
                     document.getElementById('additionalMenus').style.display = 'none';
                 }
@@ -201,8 +205,6 @@ window.onload = function() {
     }
     resselection.fifthString = input5Value;
 
-    resselection.sixthString = document.getElementById('menu3').value;
-    resselection.sevenththString = document.getElementById('input6').value;
             
     //
     fetch('https://g6a6uagj29.execute-api.us-east-2.amazonaws.com/default/digixp_231030_x_1', {
