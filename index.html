@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 20 test</title>
+    <title>Quote Cal 21 test</title>
     <style>
         body, html {
             height: 100%;
@@ -112,8 +112,8 @@ let resselection = {
     thirdString: ' ',
     fourthString: ' ',
     fifthString: ' ',
-    sixthString: ' ',
-    seventhString: ' '
+    sixthString: ' test',
+    seventhString: ' testok'
 };
 
 
@@ -142,9 +142,6 @@ window.onload = function() {
                 if (menu1Selection === 'RB') {
                     document.getElementById('additionalMenus').style.display = 'block';
                     fetchMenu3Options(menu1Selection);
-
-                    resselection.sixthString = document.getElementById('menu3').value;
-                    resselection.sevenththString = document.getElementById('input6').value;
                     
                 } else {
                     document.getElementById('additionalMenus').style.display = 'none';
