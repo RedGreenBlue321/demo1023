@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 33 test</title>
+    <title>Quote Cal 19 test</title>
     <style>
         body, html {
             height: 100%;
@@ -78,22 +78,13 @@
     <input type="text" id="input4" placeholder="Enter height" />
     <input type="text" id="input5" placeholder="Enter number" />
 
-<div id="additionalMenus" style="display: none;">
+    <div id="additionalMenus" style="display: none;">
     <div style="display: flex; align-items: center; margin-bottom: 10px;">
         <select id="menu3" style="margin-right: 10px;"></select>
         <input type="text" id="input6" placeholder="Enter value" />
     </div>
-    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-        <select id="menu4" style="margin-right: 10px;"></select>
-        <input type="text" id="input7" placeholder="Enter value" />
     </div>
-    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-        <select id="menu5" style="margin-right: 10px;"></select>
-        <input type="text" id="input8" placeholder="Enter value" />
-    </div>
-</div>
 
-        
     <button onclick="sendDataToLambda()">Get the price</button>
     <p id="response" ></p>
     <p> Start a new selection if you have more window </p>
@@ -120,7 +111,9 @@ let resselection = {
     secondString: ' ',
     thirdString: ' ',
     fourthString: ' ',
-    fifthString: ' '
+    fifthString: ' ',
+    sixthString: ' ',
+    seventhString: ' '
 };
 
 menu1.addEventListener('change', function() {
@@ -129,6 +122,7 @@ menu1.addEventListener('change', function() {
     // Show additional menus if 'RB' is selected
     if (menu1Selection === 'RB') {
         document.getElementById('additionalMenus').style.display = 'block';
+        fetchMenu3Options(menu1Selection);
     } else {
         document.getElementById('additionalMenus').style.display = 'none';
     }
@@ -145,6 +139,7 @@ window.onload = function() {
         .then(data => {
             const menu1 = document.getElementById('menu1');
             const menu2 = document.getElementById('menu2');
+            const menu3 = document.getElementById('menu3');
 
             // Populate the menu1 with the received data
             data.menu1.forEach(item => {
@@ -173,6 +168,17 @@ window.onload = function() {
                 });
             }
 
+            // Function to fetch and populate menu3 options
+            function fetchMenu3Options(selection) {
+                // Clear existing options
+                menu3.innerHTML = '';
+                // Populate the menu3 with options dependent on menu1 selection
+                (data.dependentOptionsx0[selection] || []).forEach(item => {
+                    const option = new Option(item, item);
+                    menu3.add(option);
+                });
+            }
+
             // Add an event listener to update the resselection variable for menu2
             menu2.addEventListener('change', function() {
                 resselection.secondString = this.value;
@@ -182,6 +188,7 @@ window.onload = function() {
             // Initialize menu2 with options dependent on the first available selection in menu1
             if (data.menu1.length > 0) {
                 fetchMenu2Options(data.menu1[0]);
+                fetchMenu3Options(data.menu1[0]);
             }
         });
 };
@@ -190,7 +197,6 @@ window.onload = function() {
 
     resselection.thirdString = document.getElementById('input3').value;
     resselection.fourthString = document.getElementById('input4').value;
-   // resselection.fifthString = document.getElementById('input5').value;
 
     let input5Value = document.getElementById('input5').value;
     // Check if input5 is empty, if yes, set it to 1
