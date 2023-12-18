@@ -116,20 +116,7 @@ let resselection = {
     seventhString: ' '
 };
 
-menu1.addEventListener('change', function() {
-    menu1Selection = this.value;
 
-    // Show additional menus if 'RB' is selected
-    if (menu1Selection === 'RB') {
-        document.getElementById('additionalMenus').style.display = 'block';
-        fetchMenu3Options(menu1Selection);
-    } else {
-        document.getElementById('additionalMenus').style.display = 'none';
-    }
-
-    fetchMenu2Options(menu1Selection);
-    resselection.firstString = this.value;
-});
         
 window.onload = function() {
     let menu1Selection = null;
@@ -150,6 +137,15 @@ window.onload = function() {
             // Event listener for menu1 to update menu2 based on the selection
             menu1.addEventListener('change', function() {
                 menu1Selection = this.value;
+
+                // Show additional menus if 'RB' is selected
+                if (menu1Selection === 'RB') {
+                    document.getElementById('additionalMenus').style.display = 'block';
+                    fetchMenu3Options(menu1Selection);
+                } else {
+                    document.getElementById('additionalMenus').style.display = 'none';
+                }
+                
                 // Fetch the options for menu2 based on menu1 selection
                 fetchMenu2Options(menu1Selection);
 
