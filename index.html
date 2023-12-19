@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 21 test</title>
+    <title>Quote Cal 26 test</title>
     <style>
         body, html {
             height: 100%;
@@ -112,8 +112,8 @@ let resselection = {
     thirdString: ' ',
     fourthString: ' ',
     fifthString: ' ',
-    sixthString: ' test',
-    seventhString: ' testok'
+    sixthString: ' ',
+    seventhString: ' '
 };
 
 
@@ -181,7 +181,13 @@ window.onload = function() {
                 resselection.secondString = this.value;
                 console.log(resselection);
             });
-
+            
+            // Add an event listener to update the resselection variable for menu3
+            menu3.addEventListener('change', function() {
+                resselection.sixthString = this.value;
+                console.log(resselection);
+            });
+            
             // Initialize menu2 with options dependent on the first available selection in menu1
             if (data.menu1.length > 0) {
                 fetchMenu2Options(data.menu1[0]);
