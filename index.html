@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 28 test</title>
+    <title>Quote Cal 29 test</title>
     <style>
         body, html {
             height: 100%;
@@ -262,14 +262,11 @@ function sumPrices() {
                 if (matches && matches[1]) {
                     totalPrice += parseInt(matches[1], 10);
                 }
+                let addPriceMatch = priceText.match(/ and (\d+) CAD /);
+                if (addPriceMatch && addPriceMatch[1]) {
+                    totalPrice += parseInt(addPriceMatch[1], 10);
+                }
             });
-
-        // Extract and add the additional price from the combined string
-    let combinedText = document.getElementById('response').innerText;
-    let addPriceMatch = combinedText.match(/ and (\d+) CAD /);
-    if (addPriceMatch && addPriceMatch[1]) {
-        totalPrice += parseInt(addPriceMatch[1], 10);
-    }
     
             // Display the total price
             document.getElementById('totalPrice').innerText = 'Total Price: ' + totalPrice + ' CAD';
