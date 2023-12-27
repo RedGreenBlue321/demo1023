@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 29 test</title>
+    <title>Quote Cal 31 test</title>
     <style>
         body, html {
             height: 100%;
@@ -236,6 +236,10 @@ window.onload = function() {
         document.getElementById('input4').value = '';
         document.getElementById('input5').value = '';
 
+        document.getElementById('additionalMenus').style.display = 'none';
+        document.getElementById('menu3').selectedIndex = 0;
+        document.getElementById('input6').value = '';
+
         // Optionally, if you want to also clear the previous response, you can uncomment the next line
         // document.getElementById('response').innerHTML = '';
 
@@ -245,6 +249,7 @@ window.onload = function() {
         resselection.thirdString = ' ';
         resselection.fourthString = ' ';
         resselection.fifthString = ' ';
+
 
         // Initiate a new fetch to update the second menu based on the default (first) selection of the first menu
         // This assumes that you have a function like fetchMenu2Options as per your existing onload event
