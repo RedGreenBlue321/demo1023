@@ -361,14 +361,29 @@ function generatePDF() {
     let totalPriceContent = document.getElementById('totalPrice').innerText;
     let discountedPriceContent = document.getElementById('discountedPrice').innerText;
 
-   
-    doc.text("Price Quotes:\n" + responseContent, 10, 10);
-    doc.text("Total Price:\n" + totalPriceContent, 10, 30);
-    doc.text("Discounted Price:\n" + discountedPriceContent, 10, 50);
-    
-    const pdfDataUri = doc.output('datauristring');
+    let yOffset = 10;
 
-    window.open(pdfDataUri, '_blank');
+    yOffset = addTextToPDF(doc, "Price Quotes:\n" + responseContent, 10, yOffset);
+    yOffset = addTextToPDF(doc, "Total Price:\n" + totalPriceContent, 10, yOffset);
+    addTextToPDF(doc, "Discounted Price:\n" + discountedPriceContent, 10, yOffset);
+
+    doc.save('generated.pdf');
+}
+
+function addTextToPDF(doc, text, x, initialY) {
+    let splitText = doc.splitTextToSize(text, 180); // 假设页面宽度约为190mm
+    let yOffset = initialY;
+
+    for (let i = 0; i < splitText.length; i++) {
+        if (yOffset > 280) { // 页面高度约为290mm
+            doc.addPage();
+            yOffset = 10;
+        }
+        doc.text(splitText[i], x, yOffset);
+        yOffset += 10; // 调整行间距
+    }
+
+    return yOffset + 10; // 为下一个文本块预留空间
 }
 
         
