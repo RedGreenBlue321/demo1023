@@ -361,6 +361,8 @@ function generatePDF() {
     let totalPriceContent = document.getElementById('totalPrice').innerText;
     let discountedPriceContent = document.getElementById('discountedPrice').innerText;
 
+    doc.setFontSize(10);
+    
     let yOffset = 10;
 
     yOffset = addTextToPDF(doc, "Price Quotes:\n" + responseContent, 10, yOffset);
