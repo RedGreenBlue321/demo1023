@@ -357,10 +357,16 @@ function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
+    let responseContent = document.getElementById('response').innerText;
+    let totalPriceContent = document.getElementById('totalPrice').innerText;
+    let discountedPriceContent = document.getElementById('discountedPrice').innerText;
 
-    let container = document.querySelector('.container').innerText;
+   
+    doc.text("Price Quotes:\n" + responseContent, 10, 10);
+    doc.text("Total Price:\n" + totalPriceContent, 10, 30);
+    doc.text("Discounted Price:\n" + discountedPriceContent, 10, 50);
 
-    doc.text(container, 10, 10);
+   
     doc.save('generated.pdf');
 }
 
