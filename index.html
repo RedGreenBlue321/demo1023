@@ -65,6 +65,7 @@
     //        text-align: center;
     //    }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
 </head>
 
@@ -99,6 +100,8 @@
     <input type="text" id="discountInput" placeholder="Enter discount" />
     <button onclick="calculateDiscountedPrice()">Get the discounted price</button>
     <div id="discountedPrice"></div>
+    <p> </p>
+    <button onclick="generatePDF()">Generate PDF</button>
     <p> </p>
     <p> _______________________________________________ </p>
     <button onclick="resetForm()">Clear all selection and price</button>
@@ -348,6 +351,17 @@ function initializeMenus() {
         .then(data => {
             // ... (existing code to populate menus)
         });
+}
+
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+
+    let container = document.querySelector('.container').innerText;
+
+    doc.text(container, 10, 10);
+    doc.save('generated.pdf');
 }
 
         
