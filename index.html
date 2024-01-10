@@ -96,7 +96,7 @@
     <button onclick="sumPrices()">Sum all prices</button>
     <div id="responsexy"></div>
     <div id="totalPrice">Total price: </div>
-    <p> Please input the discount (e.g., input 10 if the discount is 10%) </p>
+    <p> Please input the discount (e.g., input 10 if the discount is 10% off) </p>
     <input type="text" id="discountInput" placeholder="Enter discount" />
     <button onclick="calculateDiscountedPrice()">Get the discounted price</button>
     <div id="discountedPrice"></div>
@@ -357,15 +357,13 @@ function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    doc.setFontSize(14);
+    doc.setFontSize(16);
     doc.text("New Art Blinds", 10, 10);
+    doc.text("Quotation", 160, 10);
 
     doc.setFontSize(10);
     const headerLeft = "861 Denison St, Unit 101 Markham, ON L3R 3L6\n647-937-8888\nnewartblinds@gmail.com\nhttps://www.newartblinds.com";
     doc.text(headerLeft, 10, 15);
-
-    // 添加右上角的"Quotation"
-    doc.text("Quotation", 160, 10);
     
     let responseContent = document.getElementById('response').innerText.replace(/Delete this item/g, '');
     let totalPriceContent = document.getElementById('totalPrice').innerText;
@@ -373,32 +371,32 @@ function generatePDF() {
 
     doc.setFontSize(12);
     
-    let yOffset = 60;
+    let yOffset = 50;
 
-    yOffset = addTextToPDF(doc, "Price Quotes:\n" + responseContent, 10, yOffset);
-    yOffset = addTextToPDF(doc, "Total Price:\n" + totalPriceContent, 10, yOffset);
-    addTextToPDF(doc, "Discounted Price:\n" + discountedPriceContent, 10, yOffset);
+    yOffset = addTextToPDF(doc, "Price for each individual item:\n" + responseContent, 10, yOffset);
+    yOffset = addTextToPDF(doc, totalPriceContent, 10, yOffset);
+    addTextToPDF(doc, discountedPriceContent, 10, yOffset);
 
     if (yOffset > 280) {
         doc.addPage();
         yOffset = 10;
     }
-    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds at 647-937-8888 or newartblinds@gmail.com.\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
+    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
     
     doc.save('generated.pdf');
 }
 
 function addTextToPDF(doc, text, x, initialY) {
-    let splitText = doc.splitTextToSize(text, 180); // 假设页面宽度约为190mm
+    let splitText = doc.splitTextToSize(text, 180); 
     let yOffset = initialY;
 
     for (let i = 0; i < splitText.length; i++) {
-        if (yOffset > 280) { // 页面高度约为290mm
+        if (yOffset > 280) { 
             doc.addPage();
             yOffset = 10;
         }
         doc.text(splitText[i], x, yOffset);
-        yOffset += 4; // 调整行间距
+        yOffset += 4; 
     }
 
     return yOffset + 10; // 为下一个文本块预留空间
