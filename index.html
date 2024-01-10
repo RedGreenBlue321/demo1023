@@ -365,9 +365,10 @@ function generatePDF() {
     doc.text("Price Quotes:\n" + responseContent, 10, 10);
     doc.text("Total Price:\n" + totalPriceContent, 10, 30);
     doc.text("Discounted Price:\n" + discountedPriceContent, 10, 50);
+    
+    const pdfDataUri = doc.output('datauristring');
 
-   
-    doc.save('generated.pdf');
+    window.open(pdfDataUri, '_blank');
 }
 
         
