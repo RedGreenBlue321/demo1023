@@ -362,9 +362,6 @@ function generatePDF() {
 
     // 添加右上角的"Quotation"
     doc.text("Quotation", 160, 10);
-
-    // 确定主要内容的起始位置，避免与页眉重叠
-    let yOffset = 60; // 根据页眉的内容调整这个值
     
     let responseContent = document.getElementById('response').innerText.replace(/Delete this item/g, '');
     let totalPriceContent = document.getElementById('totalPrice').innerText;
