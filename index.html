@@ -357,7 +357,7 @@ function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    const headerLeft = "New Art Blinds\n861 Denison St, Unit 101\nMarkham, ON L3R 3L6\n647-937-8888\nnewartblinds@gmail.com\nhttps://www.newartblinds.com";
+    const headerLeft = "New Art Blinds\n861 Denison St, Unit 101 Markham, ON L3R 3L6\n647-937-8888\nnewartblinds@gmail.com\nhttps://www.newartblinds.com";
     doc.text(headerLeft, 10, 10);
 
     // 添加右上角的"Quotation"
@@ -379,7 +379,7 @@ function generatePDF() {
         doc.addPage();
         yOffset = 10;
     }
-    doc.text("THANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
+    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds at 647-937-8888 or newartblinds@gmail.com.\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
     
     doc.save('generated.pdf');
 }
@@ -394,7 +394,7 @@ function addTextToPDF(doc, text, x, initialY) {
             yOffset = 10;
         }
         doc.text(splitText[i], x, yOffset);
-        yOffset += 5; // 调整行间距
+        yOffset += 2; // 调整行间距
     }
 
     return yOffset + 10; // 为下一个文本块预留空间
