@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 32 test</title>
+    <title>Quote Cal 33 test</title>
     <style>
         body, html {
             height: 100%;
@@ -369,18 +369,24 @@ function generatePDF() {
     
     let responseContent = document.getElementById('response').innerText.replace(/Delete this item/g, '');
  //   let tableData = parseResponseContent(responseContent);
+    const tableData = [
+        ["Article1", "Dimension1", "Quantity1", "Amount1"],
+        ["Article2", "Dimension2", "Quantity2", "Amount2"],
+        // Add more rows as needed
+    ];
+    
     let totalPriceContent = document.getElementById('totalPrice').innerText;
     let discountedPriceContent = document.getElementById('discountedPrice').innerText;
     
     doc.setFontSize(12);
-   // let yOffset = 50;
+    let yOffset = 50;
 
     yOffset = addTextToPDF(doc, "Price for each individual item:\n\n", 10, yOffset);
 
     doc.autoTable({
         startY: yOffset,
         head: [['Article', 'Dimension', 'Quantity', 'Amount']],
-        body: ['Article', 'Dimension', 'Quantity', 'Amount'],
+        body: tableData,
     });
 
     yOffset = doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY + 10 : yOffset + 10;
