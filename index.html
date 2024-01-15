@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 34 test</title>
+    <title>Quote Cal 35 test</title>
     <style>
         body, html {
             height: 100%;
@@ -420,26 +420,26 @@ function parseResponseContent(responseContent) {
     let tableData = [];
 
     items.forEach(item => {
-        let parts = item.split(','); // Assume each part is separated by a comma
-        if (parts.length >= 4) {
-            try {
-                let article = parts[0].split('(')[0].trim();
-                let dimension = parts[1].trim();
-                let quantity = parts[2].split('window')[0].trim();
-                let amountSplit = parts[3].split('Price:');
-                if (amountSplit.length >= 2) {
-                    let amount = amountSplit[1].trim();
-                    tableData.push([article, dimension, quantity, amount]);
-                }
-            } catch (e) {
-                console.error('Error parsing item: ', item, e);
-                // Handle the error or skip the item
-            }
+        try {
+            let articlePart = item.split('(')[0].trim();
+            let restOfItem = item.split('(')[1];
+
+            let dimensionPart = restOfItem.split(',')[0].trim();
+            let quantityPart = restOfItem.split(',')[1].trim().split('window')[0].trim();
+            
+            let amountPartSplit = restOfItem.split('Price:');
+            let amountPart = amountPartSplit.length >= 2 ? amountPartSplit[1].trim() : '';
+
+            tableData.push([articlePart, dimensionPart, quantityPart, amountPart]);
+        } catch (e) {
+            console.error('Error parsing item: ', item, e);
+            // Handle the error or skip the item
         }
     });
 
     return tableData;
 }
+
 
         
 </script>
