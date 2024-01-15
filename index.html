@@ -369,23 +369,17 @@ function generatePDF() {
     
     let responseContent = document.getElementById('response').innerText.replace(/Delete this item/g, '');
 
- //   let tableData = parseResponseContent(responseContent);
+    let tableData = parseResponseContent(responseContent);
     
     doc.setFontSize(12);
     let yOffset = 50;
 
-    yOffset = addTextToPDF(doc, "Price for each individual item:\n\n" + responseContent, 10, yOffset);
+    yOffset = addTextToPDF(doc, "Price for each individual item:\n\n", 10, yOffset);
 
     doc.autoTable({
         startY: yOffset,
         head: [['Article', 'Dimension', 'Quantity', 'Amount']],
-        body: [
-            ['Example Article', '100x200', '2', '$50'],
-            ['Example Article', '100x200', '2', '$50'],
-            ['Example Article', '100x200', '2', '$50'],
-            ['Example Article', '100x200', '2', '$50'],
-        // 更多测试数据...
-    ],
+        body: tableData,
     });
 
     yOffset = doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY + 10 : yOffset + 10;
