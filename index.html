@@ -355,7 +355,7 @@ function initializeMenus() {
 }
 
 function generatePDF() {
- //   const { jsPDF } = window.jspdf;
+    const { jsPDF } = window.jspdf;
  //   const { autoTable } = window.jspdf;
     const doc = new jsPDF();
 
@@ -376,7 +376,7 @@ function generatePDF() {
 
     yOffset = addTextToPDF(doc, "Price for each individual item:\n\n" + responseContent, 10, yOffset);
 
-    autoTable(doc, {
+    doc.autoTable({
         startY: yOffset,
         head: [['Article', 'Dimension', 'Quantity', 'Amount']],
         body: [
