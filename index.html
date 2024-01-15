@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Cal 33 test</title>
+    <title>Quote Cal 34 test</title>
     <style>
         body, html {
             height: 100%;
@@ -368,12 +368,8 @@ function generatePDF() {
     doc.text(headerLeft, 10, 15);
     
     let responseContent = document.getElementById('response').innerText.replace(/Delete this item/g, '');
- //   let tableData = parseResponseContent(responseContent);
-    const tableData = [
-        ["Article1", "Dimension1", "Quantity1", "Amount1"],
-        ["Article2", "Dimension2", "Quantity2", "Amount2"],
-        // Add more rows as needed
-    ];
+    let tableData = parseResponseContent(responseContent);
+
     
     let totalPriceContent = document.getElementById('totalPrice').innerText;
     let discountedPriceContent = document.getElementById('discountedPrice').innerText;
@@ -420,17 +416,25 @@ function addTextToPDF(doc, text, x, initialY) {
 }
 
 function parseResponseContent(responseContent) {
-    let items = responseContent.split('\n'); // 假设每个项目由换行符分隔
+    let items = responseContent.split('\n'); // Assume each item is separated by a newline
     let tableData = [];
 
     items.forEach(item => {
-        let parts = item.split(','); // 假设每个部分由逗号分隔
+        let parts = item.split(','); // Assume each part is separated by a comma
         if (parts.length >= 4) {
-            let article = parts[0].split('(')[0].trim();
-            let dimension = parts[1].trim();
-            let quantity = parts[2].split('window')[0].trim();
-            let amount = parts[3].split('Price:')[1].trim();
-            tableData.push([article, dimension, quantity, amount]);
+            try {
+                let article = parts[0].split('(')[0].trim();
+                let dimension = parts[1].trim();
+                let quantity = parts[2].split('window')[0].trim();
+                let amountSplit = parts[3].split('Price:');
+                if (amountSplit.length >= 2) {
+                    let amount = amountSplit[1].trim();
+                    tableData.push([article, dimension, quantity, amount]);
+                }
+            } catch (e) {
+                console.error('Error parsing item: ', item, e);
+                // Handle the error or skip the item
+            }
         }
     });
 
