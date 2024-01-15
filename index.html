@@ -66,6 +66,7 @@
     //    }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
 </head>
 
@@ -355,10 +356,11 @@ function initializeMenus() {
 
 function generatePDF() {
     const { jsPDF } = window.jspdf;
+    const { autoTable } = window.jspdf;
     const doc = new jsPDF();
 
-    doc.setFontSize(16);
-    doc.text("New Art Blinds", 10, 10);
+    doc.setFontSize(18);
+    doc.text("New Art Blinds\n", 10, 10);
     doc.text("Quotation", 160, 10);
 
     doc.setFontSize(10);
@@ -366,14 +368,25 @@ function generatePDF() {
     doc.text(headerLeft, 10, 15);
     
     let responseContent = document.getElementById('response').innerText.replace(/Delete this item/g, '');
+
+    let tableData = parseResponseContent(responseContent);
+    
+    doc.setFontSize(12);
+    let yOffset = 50;
+
+    yOffset = addTextToPDF(doc, "Price for each individual item:\n\n" + responseContent, 10, yOffset);
+
+    autoTable(doc, {
+        startY: yOffset,
+        head: [['Article', 'Dimension', 'Quantity', 'Amount']],
+        body: tableData,
+    });
+
+    yOffset = doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY + 10 : yOffset + 10;
+
     let totalPriceContent = document.getElementById('totalPrice').innerText;
     let discountedPriceContent = document.getElementById('discountedPrice').innerText;
 
-    doc.setFontSize(12);
-    
-    let yOffset = 50;
-
-    yOffset = addTextToPDF(doc, "Price for each individual item:\n" + responseContent, 10, yOffset);
     yOffset = addTextToPDF(doc, totalPriceContent, 10, yOffset);
     addTextToPDF(doc, discountedPriceContent, 10, yOffset);
 
@@ -381,7 +394,7 @@ function generatePDF() {
         doc.addPage();
         yOffset = 10;
     }
-    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
+    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds\n\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
     
     doc.save('generated.pdf');
 }
@@ -400,6 +413,24 @@ function addTextToPDF(doc, text, x, initialY) {
     }
 
     return yOffset + 10; // 为下一个文本块预留空间
+}
+
+function parseResponseContent(responseContent) {
+    let items = responseContent.split('\n'); // 假设每个项目由换行符分隔
+    let tableData = [];
+
+    items.forEach(item => {
+        let parts = item.split(','); // 假设每个部分由逗号分隔
+        if (parts.length >= 4) {
+            let article = parts[0].split('(')[0].trim();
+            let dimension = parts[1].trim();
+            let quantity = parts[2].split('window')[0].trim();
+            let amount = parts[3].split('Price:')[1].trim();
+            tableData.push([article, dimension, quantity, amount]);
+        }
+    });
+
+    return tableData;
 }
 
         
