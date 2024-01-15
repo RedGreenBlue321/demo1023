@@ -379,7 +379,7 @@ function generatePDF() {
     doc.autoTable({
         startY: yOffset,
         head: [['Article', 'Dimension', 'Quantity', 'Amount']],
-        body: responseContent,
+        body: ,
     });
 
     yOffset = doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY + 10 : yOffset + 10;
