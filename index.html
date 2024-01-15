@@ -372,7 +372,7 @@ function generatePDF() {
     let tableData = parseResponseContent(responseContent);
     
     doc.setFontSize(12);
-    let yOffset = 50;
+   // let yOffset = 50;
 
     yOffset = addTextToPDF(doc, "Price for each individual item:\n\n", 10, yOffset);
 
@@ -394,7 +394,7 @@ function generatePDF() {
         doc.addPage();
         yOffset = 10;
     }
-    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds\n\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
+    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds.\n\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
     
     doc.save('generated.pdf');
 }
@@ -422,10 +422,10 @@ function parseResponseContent(responseContent) {
     items.forEach(item => {
         let parts = item.split(','); // 假设每个部分由逗号分隔
         if (parts.length >= 4) {
-            let article = parts[0].split(' (')[0].trim();
+            let article = parts[0].split('(')[0].trim();
             let dimension = parts[1].trim();
-            let quantity = parts[2].split(' window')[0].trim();
-            let amount = parts[3].split('Price: ')[1].trim();
+            let quantity = parts[2].split('window')[0].trim();
+            let amount = parts[3].split('Price:')[1].trim();
             tableData.push([article, dimension, quantity, amount]);
         }
     });
