@@ -422,10 +422,10 @@ function parseResponseContent(responseContent) {
     items.forEach(item => {
         let parts = item.split(','); // 假设每个部分由逗号分隔
         if (parts.length >= 4) {
-            let article = parts[0].split('(')[0].trim();
+            let article = parts[0].split(' (')[0].trim();
             let dimension = parts[1].trim();
-            let quantity = parts[2].split('window')[0].trim();
-            let amount = parts[3].split('Price:')[1].trim();
+            let quantity = parts[2].split(' window')[0].trim();
+            let amount = parts[3].split('Price: ')[1].trim();
             tableData.push([article, dimension, quantity, amount]);
         }
     });
