@@ -379,7 +379,13 @@ function generatePDF() {
     autoTable(doc, {
         startY: yOffset,
         head: [['Article', 'Dimension', 'Quantity', 'Amount']],
-        body: tableData,
+        body: [
+            ['Example Article', '100x200', '2', '$50'],
+            ['Example Article', '100x200', '2', '$50'],
+            ['Example Article', '100x200', '2', '$50'],
+            ['Example Article', '100x200', '2', '$50'],
+        // 更多测试数据...
+    ],
     });
 
     yOffset = doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY + 10 : yOffset + 10;
