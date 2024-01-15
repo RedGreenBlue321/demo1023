@@ -369,7 +369,7 @@ function generatePDF() {
     
     let responseContent = document.getElementById('response').innerText.replace(/Delete this item/g, '');
 
-    let tableData = parseResponseContent(responseContent);
+   // let tableData = parseResponseContent(responseContent);
     
     doc.setFontSize(12);
    // let yOffset = 50;
@@ -379,7 +379,7 @@ function generatePDF() {
     doc.autoTable({
         startY: yOffset,
         head: [['Article', 'Dimension', 'Quantity', 'Amount']],
-        body: tableData,
+        body: responseContent,
     });
 
     yOffset = doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY + 10 : yOffset + 10;
