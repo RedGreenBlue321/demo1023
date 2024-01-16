@@ -377,7 +377,7 @@ function generatePDF() {
     doc.setFontSize(12);
     let yOffset = 50;
 
-    yOffset = addTextToPDF(doc, "Price for each individual item:\n", 10, yOffset) - 5;
+    yOffset = addTextToPDF(doc, "Price for each individual item:\n", 10, yOffset) - 8;
 
     doc.autoTable({
         startY: yOffset,
@@ -387,14 +387,20 @@ function generatePDF() {
 
     yOffset = doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY + 10 : yOffset + 10;
 
-    yOffset = addTextToPDF(doc, totalPriceContent, 10, yOffset);
+    yOffset = addTextToPDF(doc, totalPriceContent, 10, yOffset) - 3;
     addTextToPDF(doc, discountedPriceContent, 10, yOffset);
 
     if (yOffset > 280) {
         doc.addPage();
         yOffset = 10;
     }
-    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds.\n\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
+    doc.text("If you have any questions concerning this quotation, please contact New Art Blinds.\n\n", 10, yOffset+20);
+    if (yOffset > 280) {
+        doc.addPage();
+        yOffset = 10;
+    }
+    doc.text("THANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
+    
     
     doc.save('generated.pdf');
 }
