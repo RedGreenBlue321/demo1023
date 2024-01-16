@@ -377,7 +377,7 @@ function generatePDF() {
     doc.setFontSize(12);
     let yOffset = 50;
 
-    yOffset = addTextToPDF(doc, "Price for each individual item:\n", 10, yOffset);
+    yOffset = addTextToPDF(doc, "Price for each individual item:\n", 10, yOffset) - 5;
 
     doc.autoTable({
         startY: yOffset,
