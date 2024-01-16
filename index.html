@@ -395,11 +395,7 @@ function generatePDF() {
         yOffset = 10;
     }
     doc.text("If you have any questions concerning this quotation, please contact New Art Blinds.\nTHANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
-    if (yOffset > 280) {
-        doc.addPage();
-        yOffset = 10;
-    }
-    doc.text("THANK YOU FOR YOUR BUSINESS!", 10, yOffset+20);
+
     
     
     doc.save('generated.pdf');
