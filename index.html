@@ -360,7 +360,7 @@ function generatePDF() {
     const doc = new jsPDF();
 
     doc.setFontSize(18);
-    doc.text("New Art Blinds\n", 10, 10);
+    doc.text("New Art Blinds\n\n", 10, 10);
     doc.text("Quotation", 160, 10);
 
     doc.setFontSize(10);
@@ -377,7 +377,7 @@ function generatePDF() {
     doc.setFontSize(12);
     let yOffset = 50;
 
-    yOffset = addTextToPDF(doc, "Price for each individual item:\n\n", 10, yOffset);
+    yOffset = addTextToPDF(doc, "Price for each individual item:\n", 10, yOffset);
 
     doc.autoTable({
         startY: yOffset,
